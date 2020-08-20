@@ -12,7 +12,7 @@ namespace main {
       for (int i = 0; i < 15; i++) 
       {
         Thread t = new Thread(new ThreadStart
-        (acct.IssueWithdraw));
+        (acct.issueWithdraw));
         t.Name = i.ToString();
         threads[i] = t;
       }
@@ -41,15 +41,15 @@ namespace main {
   }
 
   class BankAcct {
-    private Object acctLock = new object();
-    double Balance { set; get; }
+    private static Object acctLock = new object();
+    public static double Balance { set; get; }
 
     public BankAcct(double bal)
     {
       Balance = bal;
     }
 
-    public double Withdraw(double amt)
+    public static double Withdraw(double amt)
     {
       if((Balance - amt) < 0)
       {
@@ -71,9 +71,11 @@ namespace main {
       }
     }
 
-    public void IssueWithdraw()
-    {
-      Withdraw(1);
-    }
+    public Action issueWithdraw = () => { BankAcct.Withdraw(1); };
+    // the same as:
+    // public void IssueWithdraw()
+    // {
+    //   Withdraw(1);
+    // }
   }
 }
