@@ -1,6 +1,6 @@
 using System;
 
-namespace threads {
+namespace main {
   class BankAcct {
     private Object acctLock = new object();
     double Balance { set; get; }

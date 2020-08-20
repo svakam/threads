@@ -1,25 +1,19 @@
 using System;
 using System.Threading;
 
-namespace threads 
+namespace main 
 {
+  // comment in/out run functions to test scenarios
   class Program {
     static void Main(string[] args) 
     {
-      // BankScenario.Run();
+      // BankScenario.Run(); 
+      // starts bank account with amount, deducts 1 in multiple threads until 0, and
+      // has locked code from being accessed by other threads until each thread finished
 
-      Thread t = new Thread();
+      PassArgumentToThread.Run(); 
+      // passing argument into thread via lambda function
 
-      Console.ReadLine();
-
-    }
-
-    static void CountTo(int maxNum)
-    {
-      for (int i = 0; i <= maxNum ; i++)
-      {
-        Console.WriteLine(i);
-      }
     }
 
   }
@@ -62,5 +56,26 @@ namespace threads
     }
   }
 
+  class PassArgumentToThread {
+    public static void Run() {
+      Thread t = new Thread(() => CountTo(10));
+      t.Start();
 
+      new Thread(() => 
+      {
+        CountTo(5);
+        CountTo(6);
+      }).Start();
+
+      Console.ReadLine();
+    }
+
+    static void CountTo(int maxNum)
+    {
+      for (int i = 0; i <= maxNum ; i++)
+      {
+        Console.WriteLine(i);
+      }
+    }
+  }
 }
